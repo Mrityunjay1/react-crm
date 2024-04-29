@@ -1,7 +1,12 @@
 import "./App.css";
+import Login from "./components/Login";
 
 function App() {
-  return <>New App</>;
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <Login />
+    </div>
+  );
 }
 
 export default App;
