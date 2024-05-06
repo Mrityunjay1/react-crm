@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/AuthSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -61,6 +61,12 @@ const Login = () => {
           >
             LOGIN
           </button>
+          <p className="text-md text-white">
+            Already Have an Account ?{" "}
+            <Link to="/signup" className="text-black font-semibold">
+              SignUp Instead
+            </Link>
+          </p>
         </div>
       </div>
     </div>

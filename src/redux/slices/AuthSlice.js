@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../helpers/axiosInstance";
+import toast from "react-hot-toast";
 
 const initialState = {
   role: localStorage.getItem("role") || "",
@@ -16,11 +17,32 @@ export const login = createAsyncThunk("/auth/login", async (data) => {
     console.log(error);
   }
 });
+export const signUp = createAsyncThunk("/auth/signup", async (data) => {
+  try {
+    const response = axiosInstance.post("auth/signup", data);
+    toast.promise(response, {
+      loading: "Submitting",
+      success: "Signed up Successfully",
+      error: "Something went wrong",
+    });
+    return await response;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      localStorage.clear();
+      (state.role = ""),
+        (state.isLoggedIn = false),
+        (state.data = undefined),
+        (state.token = "");
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
       if (action.payload?.status !== 201 || !action.payload) return;
@@ -38,5 +60,7 @@ const authSlice = createSlice({
     });
   },
 });
+
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;
